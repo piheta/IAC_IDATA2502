@@ -12,7 +12,7 @@ parameters:
 resources:
   vm1:
     properties:
-      flavor: m1.small
+      flavor: m1.large
       image: Ubuntu Server 20.04 (Focal) amd64 20200424
       key_name: ED
       networks:
