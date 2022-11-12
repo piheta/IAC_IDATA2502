@@ -1,0 +1,26 @@
+heat_template_version: '2015-04-30'
+
+description: >
+    Humidity srv
+
+parameters:
+    image_id: {default: Ubuntu Server 20.04 (Focal) amd64 20200424, description: image, type: string}
+    instance_type: {default: m1.small, description: instance, type: string}
+    key_name: {default: ED, description: Name of an existing key pair to use for the instance, type: string}
+    ip_address : {default: 10.212.25.196, description : Floating IP address to be associated to the instance, type : string}
+
+resources:
+  vm1:
+    properties:
+      flavor: m1.small
+      image: Ubuntu Server 20.04 (Focal) amd64 20200424
+      key_name: ED
+      networks:
+      - network: VmNetwork
+    type: OS::Nova::Server
+
+  IPAssoc :
+    type : AWS::EC2::EIPAssociation
+    properties :
+        InstanceId : { get_resource: vm1 }
+        EIP : { get_param : ip_address }
