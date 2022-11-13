@@ -61,3 +61,23 @@
         dest: /home/ubuntu/repos/
         clone: yes
         update: yes
+    - name: Replace string to include password in humidityServer.java
+      replace:
+        path: /home/ubuntu/repos/react-java-mysql/backend/src/main/java/no/ntnu/Plants/humidityReciever/HumidityServer.java
+        regexp: 'var_keystore_passwd'
+        replace: '{{ KEYSTOREPASSWD }}'
+    - name: Replace db url in application.properties
+      replace:
+        path: /home/ubuntu/repos/react-java-mysql/backend/target/classes/application.properties
+        regexp: 'var_dburl'
+        replace: '{{ DBURL }}'
+    - name: Replace db username in application.properties
+      replace:
+        path: /home/ubuntu/repos/react-java-mysql/backend/target/classes/application.properties
+        regexp: 'var_dbusr'
+        replace: '{{ DBUSR }}'
+    - name: Replace db password in application.properties
+      replace:
+        path: /home/ubuntu/repos/react-java-mysql/backend/target/classes/application.properties
+        regexp: 'var_dbpasswd'
+        replace: '{{ DBPASSWD }}'
