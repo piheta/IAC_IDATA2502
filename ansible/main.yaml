@@ -81,3 +81,8 @@
         path: /home/ubuntu/repos/react-java-mysql/backend/target/classes/application.properties
         regexp: 'var_dbpasswd'
         replace: '{{ DBPASSWD }}'
+    - name: Replace db password in db/password.txt
+      replace:
+        path: /home/ubuntu/repos/react-java-mysql/db/password.txt
+        regexp: 'var_dbpasswd'
+        replace: '{{ DBPASSWD }}'
