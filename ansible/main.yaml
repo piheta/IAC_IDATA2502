@@ -14,6 +14,7 @@
         - curl
         - gnupg-agent
         - software-properties-common
+        - maven
     - name: add GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -60,23 +61,38 @@
         repo: https://github.com/EpicDome/Nettverk_humidity.git
         dest: /home/ubuntu/repos/
         clone: yes
-        update: yes
+        update: no
     - name: Replace string to include password in humidityServer.java
       replace:
         path: /home/ubuntu/repos/react-java-mysql/backend/src/main/java/no/ntnu/Plants/humidityReciever/HumidityServer.java
         regexp: 'var_keystore_passwd'
         replace: '{{ KEYSTOREPASSWD }}'
-    - name: Replace db url in application.properties
+    - name: Replace db url in src application.properties
+      replace:
+        path: /home/ubuntu/repos/react-java-mysql/backend/src/main/resources/application.properties
+        regexp: 'var_dburl'
+        replace: '{{ DBURL }}'
+    - name: Replace db username in src application.properties
+      replace:
+        path: /home/ubuntu/repos/react-java-mysql/backend/src/main/resources/application.properties
+        regexp: 'var_dbusr'
+        replace: '{{ DBUSR }}'
+    - name: Replace db password in src application.properties
+      replace:
+        path: /home/ubuntu/repos/react-java-mysql/backend/src/main/resources/application.properties
+        regexp: 'var_dbpasswd'
+        replace: '{{ DBPASSWD }}'
+    - name: Replace db url in target application.properties
       replace:
         path: /home/ubuntu/repos/react-java-mysql/backend/target/classes/application.properties
         regexp: 'var_dburl'
         replace: '{{ DBURL }}'
-    - name: Replace db username in application.properties
+    - name: Replace db username in target application.properties
       replace:
         path: /home/ubuntu/repos/react-java-mysql/backend/target/classes/application.properties
         regexp: 'var_dbusr'
         replace: '{{ DBUSR }}'
-    - name: Replace db password in application.properties
+    - name: Replace db password in target application.properties
       replace:
         path: /home/ubuntu/repos/react-java-mysql/backend/target/classes/application.properties
         regexp: 'var_dbpasswd'
@@ -86,3 +102,13 @@
         path: /home/ubuntu/repos/react-java-mysql/db/password.txt
         regexp: 'var_dbpasswd'
         replace: '{{ DBPASSWD }}'
+    - name: Build backend
+      become: True
+      shell:
+        cmd: "mvn clean install"
+        chdir: /home/ubuntu/repos/react-java-mysql/backend/
+    - name: Run docker-compose
+      become: True
+      shell:
+        cmd: "docker-compose -f compose.yaml up -d"
+        chdir: /home/ubuntu/repos/react-java-mysql/
