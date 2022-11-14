@@ -102,12 +102,12 @@
         path: /home/ubuntu/repos/react-java-mysql/db/password.txt
         regexp: 'var_dbpasswd'
         replace: '{{ DBPASSWD }}'
-    - name: Build backend
+    - name: Build backend jar with mvn clean install
       become: True
       shell:
         cmd: "mvn clean install"
         chdir: /home/ubuntu/repos/react-java-mysql/backend/
-    - name: Run docker-compose
+    - name: Run docker-compose for all containers
       become: True
       shell:
         cmd: "docker-compose -f compose.yaml up -d"
