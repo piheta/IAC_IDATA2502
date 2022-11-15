@@ -15,6 +15,8 @@
         - gnupg-agent
         - software-properties-common
         - maven
+        - npm
+        - daemon
     - name: add GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -58,7 +60,7 @@
         group: ubuntu
     - name: Clone project repository
       git:
-        repo: https://github.com/EpicDome/Nettverk_humidity.git
+        repo: https://github.com/tama3ti/Nettverk_humidity.git
         dest: /home/ubuntu/repos/
         clone: yes
         update: no
@@ -110,5 +112,5 @@
     - name: Run docker-compose for all containers
       become: True
       shell:
-        cmd: "docker-compose -f compose.yaml up -d"
+        cmd: "docker-compose -f compose.yaml -p humid up -d"
         chdir: /home/ubuntu/repos/react-java-mysql/
