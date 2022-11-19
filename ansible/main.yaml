@@ -15,9 +15,12 @@
         - gnupg-agent
         - software-properties-common
         - maven
-        - npm
         - daemon
-    - name: add GPG key
+    - name: update nodejs
+      become: True
+      shell:
+        cmd: "curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash - && sudo apt-get install -y nodejs"
+    - name: add docker GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
@@ -112,6 +115,10 @@
       shell: 
         cmd: "mvn package -DskipTests"
         chdir: /home/ubuntu/repos/react-java-mysql/backend/
+    - name: update npm
+      become: True
+      shell:
+        cmd: "npm install -g npm@9.1.2"
     - name: Run docker-compose for all containers
       become: True
       shell:
