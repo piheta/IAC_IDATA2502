@@ -64,6 +64,8 @@
         dest: /home/ubuntu/repos/
         clone: yes
         update: no
+      become: true
+      become_user: ubuntu
     - name: Replace string to include password in humidityServer.java
       replace:
         path: /home/ubuntu/repos/react-java-mysql/backend/src/main/java/no/ntnu/Plants/humidityReciever/HumidityServer.java
@@ -104,10 +106,11 @@
         path: /home/ubuntu/repos/react-java-mysql/db/password.txt
         regexp: 'var_dbpasswd'
         replace: '{{ DBPASSWD }}'
-    - name: Build backend jar with mvn clean install
-      become: True
-      shell:
-        cmd: "mvn clean install"
+    - name: Build backend Jar with mvn clean install
+      become: true
+      become_user: ubuntu
+      shell: 
+        cmd: "mvn package -DskipTests"
         chdir: /home/ubuntu/repos/react-java-mysql/backend/
     - name: Run docker-compose for all containers
       become: True
